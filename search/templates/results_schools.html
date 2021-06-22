@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Rezultate Facultati {% endblock %}
+
+{% block body %}
+
+	<div>
+		<section class="section">
+			<h1 class="title is-2" style="text-align: center;"> Rezultate Facultati </h1>
+			<div class="container mgt-medium">
+				{% if schools|length >= 1 %}
+					{% for school in schools %}
+						<div class="box">
+							<a href="{% url 'school:school_view' school.id_facultate %}" style="color: #363636; text-decoration: none; ">
+								<div>
+									<h1 class="title is-4 mb-5">{{school.facultate}}</h1>
+									<div class="content">
+										{# <span class="tag is-info mb-4">Facultate smechera</span> #}
+										{% if school.universitate %}
+											<p>In cadrul <strong>{{school.universitate}}</strong></p>
+										{% endif%}
+										<p>Localitatea <strong>{{school.localitate}}</strong></p>
+									</div>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+					<div class="container mt-5">
+						<div class="pl-2 pr-2">
+							<p>
+								Nu-ti gasesti facultatea? 
+								Incearca sa <a href = "{% url 'search_page' %}"><strong>fii mai specific</strong></a> combinand numele scolii, universitatii si localitatii. <br>
+								<em>Exemplu: mecanica politehnica bucuresti</em>
+							</p>
+						</div>
+					</div>
+				{% else %}
+					<div class="notification is-warning is-light" style="text-align: center; font-size: 20px;">
+						<p class="content">Nu a fost gasita nicio facultate cu acest nume.</p>
+						<p class="content"><i class="fa fa-info-circle" style="color: hsl(217, 71%, 53%);"></i> Poti combina numele facultatii, universitatii si localitatii pentru a gasi mai rapid.</p>
+						<p class="content"><i>Verifica daca ai scris corect sau incearca o alta cautare.</i></p>
+
+						<a class="button is-warning" href="{% url 'search_page' %}" style="display: inline-block; width: "> Inapoi la cautare</a>
+					</div>
+					<div class="notification is-info is-light" style="text-align: center; font-size: 20px;">
+						<p class="content">Nu reusesti sa-ti gasesti facultatea?</p>
+						<a class="button is-dark" href="{% url 'school:school_add' %}" style="display: inline-block; width: "> Adauga una noua</a>
+					</div>
+				{% endif%}
+			</div>
+		</section>
+	</div>
+
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% load jinja_custom_filters %}
+
+{% block title %} {{ school.facultate }} {% endblock %}
+
+{% block body %}
+
+	<div>
+
+		<div>
+
+		<section class="section pt-5 pb-5">
+			<h1 class="main-title title is-1 has-text-centered"> {{ school.facultate }} </h1>
+			<div class="container">
+				<div class="content">
+					<div class="content">
+						
+						<div class="tile is-ancestor">
+						  <div class="tile is-4 is-vertical is-parent">
+							<div class="tile is-child box">
+							  <p class="title is-3">Detalii</p>
+							{% if school.universitate %}
+								
+								<p><i class="info-icon fa fa-university"></i> In cadrul <strong>{{school.universitate}}</strong></p>
+							{% endif%}
+								<p><i class="info-icon fa fa-location-arrow mr-1 ml-1"></i> Localitatea <strong>{{school.localitate}}</strong></p>
+							</div>
+						  </div>
+						  <div class="tile is-parent">
+
+							<div class="school-professors-container tile is-child box  ">
+								<div class="columns professors-nav-bar mb-4 pl-3 pr-3">
+									<div class="column is-narrow-tablet">
+										<p class="school-professors-title title is-3 ">Profesori</p>
+									</div>
+									<div class="column is-narrow">
+										<div class="school-professors-title control">
+											<form id="school-prof-search-form" action="{% url 'search:school_profs' school.id_facultate %}">
+												<div class="field has-addons">
+												  <div class="control">
+												    <input id="school-prof-name-filter" name="query" class="input" type="text" placeholder="Cauta profesor" required>
+												  </div>
+												  <div class="control">
+												    <a id = "school-prof-name-button" class="button" onclick="$('#school-prof-search-form').submit();" style="background-color: hsl(141, 53%, 53%); color: white;">
+												      <i class="fa fa-search mr-1" style="font-size: inherit;"></i>Search
+												    </a>
+												  </div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+								
+								
+										
+
+								<div id = "scrollable-div">
+									{% for prof in profs %}
+										{# {% if forloop.counter < 11 %} #}
+											<hr class="school-professor-hr mt-1 mb-1">
+											<a class="school-professor-link" href="{% url 'prof:prof_view' prof.id_profesor %}">
+												<div class="school-professor-box box">
+													<div>
+														<div class="columns mt-1">
+
+															<div class="mb-0 pb-0 mt-0 pt-0 column listing-prof-name">
+																<span class="is-size-5">
+																	<i class="info-icon fa fa-user mr-2"></i>
+																	<span class="school-prof-name-text">{{prof.nume}}</span>
+																</span>
+															</div>
+															
+															<div class="listing-star-container column mt-0 pb-0">
+																<div class="pb-0 is-size-5 has-text-left-mobile has-text-right-tablet">
+																	{% if prof.media_rotunjita %}
+																		{% for _ in prof.media_rotunjita|as_range %}
+																			<i class="fa fa-star checked"></i>
+																		{% endfor %}
+																		{% for _ in 5|sub:prof.media_rotunjita|as_range %}
+																			<i class="fa fa-star"></i>
+																		{% endfor %}
+																			
+																		{% if prof.numarul_notelor > 1 %}
+																			<span class="fa ml-2">{{ prof.media_notelor }} ({{ prof.numarul_notelor }} note)</span>
+																		{% else %}
+																			<span class="fa ml-2">{{ prof.media_notelor }} (o nota)</span>
+																		{% endif %}
+																	{% endif %}
+																</div>
+															</div>
+														
+														</div>
+
+														<div class="school-prof-content content">
+															{% if prof.disciplina %}
+																<p>Materia <strong>{{prof.disciplina}}</strong></p>
+															{% endif %}
+															<p>In departamentul <strong>{{prof.departament}}</strong></p>
+														</div>
+													</div>
+												</div>
+											</a>
+										{# {% endif %} #}
+									{% endfor %}
+
+									{% if profs|length < 15 %}
+										<div class="notification is-info is-light" style="text-align: center; font-size: 20px;">
+											<p class="content">Nu-ti gasesti profesorul?</p>
+											<a class="button is-dark" href="{% url 'prof:prof_add' %}" style="display: inline-block; width: "> Adauga unul nou</a>
+										</div>
+									{% else %}
+										<div class="notification is-info is-light mt-2" style="text-align: center; font-size: 20px;">
+											<p class="content">Foloseste functia de cautare pentru a vedea toti profesorii</p>
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<hr class="navbar-divider">
+
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block afterbody %}
+
+
+<script type="text/javascript">
+
+	function delay(callback, ms) {
+	  var timer = 0;
+	  return function() {
+		var context = this, args = arguments;
+		clearTimeout(timer);
+		timer = setTimeout(function () {
+		  callback.apply(context, args);
+		}, ms || 0);
+	  };
+	}
+
+	// $('div.').scroll(function() {
+	//     if($(window).scrollTop() == $(document).height() - $(window).height()) {
+	//            // ajax call get data from server and append to the div
+	//     }
+	// });
+
+{% endblock %}

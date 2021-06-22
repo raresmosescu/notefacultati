@@ -1,0 +1,249 @@
+{% extends 'base.html' %}
+
+{% block title %}Adaugă profesor{% endblock %}
+
+{% block body %}
+
+{% load static %}
+	
+	<section class="section">
+	<div class="container form-container-1 ">
+		<div >
+			<h3 class="title is-3"> Adaugă un profesor nou </h3>
+			<div class="content">
+				<p><strong>Important:</strong>  Asigura-te ca profesorul nu exista deja la aceasta facultate, <a href="{% url 'search_page' %}"><strong>cautand aici.</strong></a></p>
+			</div>	
+			<form id="prof_add_form" method="POST" action="{% url 'prof:prof_add' %}" name="prof_add"> {% csrf_token %}	
+				
+				<div class="field">
+				  <label class="label">*Cauta si alege numele facultatii unde preda </label>
+				    <div class="trigger-school-name-area">
+					  <div  class="control">
+					    <input id="school-search-input" name="school_name" class="input is-medium" type="text" placeholder="ex. Facultatea de Matematica si Informatica" required>
+					  </div>
+					  <input type="hidden" name="school_id" id="dynamic-school-id" required>
+					  <div class="dropdown is-active hide">
+						  <div class="dropdown-menu" id="dropdown-menu5" role="menu">
+							<div class="dropdown-content">
+
+							</div>
+						  </div>
+					  </div>
+					  <p class="help">Poti combina numele facultatii, orasul si universitatea.</p>
+					</div>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Prenume</label>
+				  <div class="control">
+				    <input name="prof_first_name" class="input is-medium" type="text" placeholder="ex. Ion" required>
+				  </div>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Nume</label>
+				  <div class="control">
+				    <input name="prof_last_name" class="input is-medium" type="text" placeholder="ex. Popescu" required>
+				  </div>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Departamentul (sau specializarea)</label>
+				  <div class="control">
+				    <div class="select is-medium">
+				      <select name="prof_department" id = "select-department" required>
+				        	<option selected="true" disabled="disabled">Alege departament</option>
+				      </select>
+				    </div>
+				  </div>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Denumire materie</label>
+				  <div class="control">
+				    <input name="prof_class" class="input is-medium" type="text" placeholder="ex. Analiza Matematica I, Biologie Celulara, etc." required>
+				  </div>
+				  <p class="help">Denumirea completa curs / seminar / laborator predat de acest profesor</p>
+				</div>
+
+<!--				<div class="field">
+				  <label class="label">Link catre pagina unde e listat ca profesor (optional)</label>
+				  <div class="control">
+				    <input name="prof_directory_link" class="input is-medium" type="url" placeholder="https://">
+				  </div>
+				</div> -->
+
+				<div class="field mt-4">
+				  <div class="control">
+				    <label class="checkbox">
+				    	<input type="checkbox" name="checkbox" required="required">
+				      I agree to the <a href="#">terms and conditions</a>
+				    </label>
+				  </div>
+				</div>
+
+			  <button type="submit" class="hide submit">Submit</button>
+			
+			  <div class="control mt-5">
+			  	<div class="g-recaptcha" data-sitekey="{{captcha_key}}"></div>
+			  	<br/>
+			  </div>
+
+			</form>
+
+		</div>
+		<button class="button is-link submit mt-0">Salveaza</button>
+	</div>
+	</section>
+{% endblock %}
+
+{% block afterbody %}
+
+	<script type="text/javascript">
+
+		// Check all inputs and make sure they're ok
+		$('button.button.submit').click(function () {
+			let submit = true;
+			let val1 = $('#dynamic-school-id').val()
+			if (val1 != '' && val1 != null) {
+				console.log('\nsubmitted\n')
+				$('button[type="submit"]').trigger("click");
+			} else {
+				alert('Cauta si selecteaza scoala')
+			}
+		});
+
+
+		let SUGGESTIONS_DELAY_MILLISECONDS = 300
+
+		function delay(callback, ms) {
+		  var timer = 0;
+		  return function() {
+			var context = this, args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+			  callback.apply(context, args);
+			}, ms || 0);
+		  };
+		}
+		
+		$("#school-search-input").keyup(delay(function(e) {
+			let value = this.value
+
+			$.ajax({
+				type: "post",
+				url: "{% url 'search:ajax_school' %}",
+				dataType: "json",
+				data: {'school':value},
+				success: function (data) {
+					var html = ''
+					data_obj = JSON.parse(data)
+
+					if (data_obj == null || data_obj.length == 0) {
+						$('.dropdown').show();
+								html += '<div class="dropdown-item" style="height:2rem; text-align: center; text-align: left;"> \
+										<p class="title is-6"> Nicio facultate cu numele "<i class="has-text-weight-bold">' + value + '</i>" nu a fost gasita <a href={% url "school:school_add" %}>(adaug-o tu)</a></p> </div>';
+
+							// if (i == 6) { break; }
+						$(".dropdown-content").html(html);
+
+					} else {
+						for (var i = 0; i < data_obj.length; i++) {
+							$('.dropdown').show();
+							// link = "{% url 'school:school_view' school_id=1 %}".replace('1', data_obj[i]['doc_id'].toString());
+							link = '#'
+
+							html += `<div class="dropdown-item prof-add-school-dropdown-option" style="color: #363636; cursor: pointer;" 
+							data-school-id="${data_obj[i]['id_facultate'].toString()}" data-school-name="${data_obj[i]['facultate'].toString()}" data-school-uni="${data_obj[i]['universitate'].toString()}" data-school-loc="${data_obj[i]['localitate'].toString()}"> 
+										<p class="ellipsis title is-6 mb-0 pb-1">` + data_obj[i]['facultate'] + `</p> 
+										<p class="ellipsis mb-0 pb-0">` + data_obj[i]['universitate'] + `</p> 
+										<p class="ellipsis mb-0 mt-0 pt-0">` + data_obj[i]['localitate'] + `</p> </div>`;
+							if (i < data_obj.length - 1) {
+								html += '<hr class="dropdown-hr">'
+							}				
+						}
+
+						// html += '<div class="dropdown-item" style="height:2rem; text-align: center; text-align: left;"> \
+						// 			<p class="title is-6"> Nu-ti gasesti scoala? <a href={% url "school:school_add" %}>(adaug-o tu)</a></p> </div>'
+						$(".dropdown-content").html(html);
+					}
+
+				}
+			});
+
+		}, SUGGESTIONS_DELAY_MILLISECONDS));
+
+
+		// remove the output value if the input is changed and no school was picked from the results
+		$("#school-search-input").change(function() {
+			// console.log($('#dynamic-school-id').val());
+			if ($('#dynamic-school-id').val() != '') {
+				$('#dynamic-school-id').val('');
+			}		
+			if ($(this).hasClass('is-success')) {
+				$(this).removeClass('is-success');
+				$('#select-department').html("<option>Alege departament</option>");
+			}
+		});
+
+
+		// close search suggestions dropdown when search input is out of focus
+		$(document).on("click",".prof-add-school-dropdown-option", function () {
+			if ($(this).find('p').length > 1) {
+				let SELECTED_SCHOOL_ID = $(this).attr('data-school-id');
+				let SELECTED_SCHOOL_NAME = $(this).attr('data-school-name');
+				let SELECTED_SCHOOL_LOC = $(this).attr('data-school-loc');
+				let SELECTED_SCHOOL_UNI = $(this).attr('data-school-uni');
+
+				$('#school-search-input').val(`${SELECTED_SCHOOL_NAME}, ${SELECTED_SCHOOL_LOC}`);
+				if (!$(this).hasClass('is-success')) {
+					$('#school-search-input').addClass('is-success');
+				}
+				$('#dynamic-school-id').val(SELECTED_SCHOOL_ID);
+				$('.dropdown').hide();
+				$("output").toggleClass("hide");
+				get_departments(SELECTED_SCHOOL_ID);
+			}
+			
+		});
+
+		
+		// Hide dropdown on click outside the input & dropdown div container
+		$(document).mouseup(function(e) {
+		    var container = $(".trigger-school-name-area");
+
+		    // if the target of the click isn't the container nor a descendant of the container
+		    if (!container.is(e.target) && container.has(e.target).length === 0) 
+		    {
+		        $('.dropdown').hide();
+		    }
+		});
+
+
+	// Add the right departments
+	
+	function get_departments(school_id) {
+		// console.log('dynamic-school-id')
+		$.ajax({
+			type: "post",
+			url: "{% url 'site_utility:ajax_departments' %}",
+			dataType: "json",
+			data: {'school_id':school_id},
+			success: function (data) {
+				var html = '';
+				if (data.length == 0) {
+					console.log('no data');
+				} else {
+					$.each(data, function(key, value) {
+						html += '<option>' + key + '</option>';
+					});
+					$('#select-department').html(html);
+				}
+
+			}
+		});
+
+	};
+
+	</script>
+{% endblock %}

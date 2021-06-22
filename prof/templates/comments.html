@@ -1,0 +1,144 @@
+	{% load jinja_custom_filters %}
+
+	<div class="container">
+
+		<div class="pl-4 pr-4 pt-4 pb-5">
+			<h2 class="title is-3">Ce spun studentii</h2>
+		</div>
+		{% if reviews|length > 0 %}
+
+			{% for review in reviews %}
+
+				{% if review %}
+
+					<div class="card" style="margin-bottom: 10px;">
+						<header class="card-header">
+
+							<p class="card-header-title">
+								Student - {{review.id_parere|mult:"93"}}
+								<span style="margin-left: auto; margin-right: 0px; font-weight: 100; font-style: ;">
+									{% if review.timestamp %}
+										<time>{{review.timestamp|dt_to_ro}}</time>
+									{% endif %}										
+								</span>
+							</p>
+
+
+		<!--						<button class="card-header-icon" aria-label="more options">
+									<span class="icon">
+										<i class="fa fa-angle-down" aria-hidden="true"></i>
+									</span>
+								</button> -->
+						</header>
+						<div class="card-content">
+							<div class="columns">
+								
+								<div class="column">
+									<h2 class="title is-6">Rating</h2>
+									<div>
+											Nota generala: <span class="ml-2">
+											{% for n in 5|as_range %}
+												{% if review.nota_generala > n %}
+													<i class=" fa fa-star checked"></i>
+												{% else %}
+													<i class=" fa fa-star"></i>
+												{% endif %}
+											{% endfor %}
+											</span>
+									</div>
+									<div>
+											Dificultatea: <span class="ml-2"> 
+											{% for n in 5|as_range %}
+												{% if review.dificultate > n %}
+													<i class=" fa fa-fire checked"></i>
+												{% else %}
+													<i class="fa fa-fire"></i>
+												{% endif %}
+											{% endfor %}
+											</span>
+									</div>
+
+									<span class="tags mb-0 pb-0">  
+										<span> Ar repeta experienta?
+											{% if review.as_repeta %}
+												 <span class="tag ml-1 mb-0 pb-0 is-link">Da</span>
+											{% else %}
+												<span class="tag ml-1 mb-0 pb-0 is-danger is-light">Nu</span>
+											{% endif %}
+											
+										</span>
+									</span>
+									
+									<div class="tags mb-0">  
+										<span>
+											{% if review.tag1 %}
+											 Taguri: 
+												<span class="tag mb-0 ml-2 is-link is-light">{{ all_tags|key:review.tag1 }}</span>
+											{% endif %}
+											{% if review.tag2 %}
+												<span class="tag mb-0 is-link is-light">{{ all_tags|key:review.tag2 }}</span>
+											{% endif %}
+											{% if review.tag3 %}
+												<span class="tag mb-0 is-link is-light">{{ all_tags|key:review.tag3 }}</span>
+											{% endif %}
+										</span>
+									</div>
+								
+									<div class="">
+									{% if review.nota_primita_student %}
+										Nota studentului la acest profesor: <span class="tag ml-2 is-dark">{{ review.nota_primita_student }}</span>
+									{% endif %}
+									</div>
+								</div>
+
+								
+								<div class="column">
+									<h2 class="title is-6">Parerea</h2>
+									<div class="message-border-box">
+									{% if review.mesaj != "None" and review.mesaj != '' and review.mesaj != none %}
+										<div class="content ml-2 mt-2 mr-2 mb-2">
+
+											{{ review.mesaj }}
+											
+										</div>
+									{% endif %}
+									</div>
+
+
+								</div>
+							</div>
+<!--						<footer id = "comment-action-container" class="card-footer">
+								<a href="#" class="card-footer-item no-effects-link comment-action-button">
+									<i class="comment-action-icon fa fa-thumbs-o-up mr-2"></i>
+									<span class="comment-action-text">Like</span>
+								</a>
+								
+								<a href="#" class="card-footer-item no-effects-link comment-action-button">
+									<i class="comment-action-icon fa fa-thumbs-o-down mr-2"></i>
+									<span class="comment-action-text">Dislike</span>
+								</a>
+								
+								<a href="#" class="card-footer-item no-effects-link comment-action-button">
+									<i class="comment-action-icon fa fa-comment mr-2"></i>
+									<span class="comment-action-text">Raspunde</span>
+								</a>
+								
+								<a href="#" class="card-footer-item no-effects-link comment-action-button">
+									<i class="comment-action-icon fa fa-flag-o mr-2"></i>
+									<span class="comment-action-text">Raporteaza</span>
+								</a>
+							</footer>  -->
+						</div>
+					</div>
+
+				{% else %}
+
+				{% endif %}
+			{% endfor %}
+
+		{% else %}
+
+			<p>Spune-ti tu primul parerea (<a href="{{ request.path }}adauga-nota">apasa aici sa incepi)</a></p>
+
+		{% endif %}
+	</div>

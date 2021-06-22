@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Cauta{% endblock %}
+
+{% block body %}
+
+	<div class="center-screen">
+		<section class="section" >
+			<div id = "search-container" class="container">
+
+				
+
+				<form id="form-fac" action="{% url 'search:search' %}" class="container mb-6" method="get" name="school_add">
+					<h3 class="title is-3"> Caută-ți facultatea </h3>
+
+					<div class="trigger-school-name-area">
+						<div class="field has-addons mb-0">
+							<input id = "school-search-input" class="input is-medium" name="query" placeholder="ex: medicina bucuresti davila">
+							<input id = "school-search-button" class="button is-link is-medium" type="submit" value="Cauta"/>
+						</div>
+
+						<div class="dropdown is-active hide">
+							  <div class="dropdown-menu" id="dropdown-menu5" role="menu">
+								<div class="dropdown-content">
+
+								</div>
+							  </div>
+						</div>
+
+<!--					<span class="mt-2"> 
+						 	<i class="fa fa-info-circle" style="color: hsl(217, 71%, 53%);"></i>
+						 	<span style="color: grey; font-size: 15px; font-style: italic;"> 
+						 		Poti combina numele facultatii, orasului si universitatii.
+						 	</span>
+						 </span> -->
+					</div>
+
+				</form>
+
+				<form id="form-prof" action="{% url 'search:results' %}" class="container mb-6 hide" method="post" name="profesor"> {% csrf_token %}
+					<h3 class="title is-3"> Caută profesor </h3>
+					<div class="field has-addons">
+						<input id = "prof-search-input" class="input is-medium" name="search-prof" placeholder="ex. Popescu">
+						<input id = "prof-search-button" class="button is-link is-medium" type="submit" value="Cauta"/>
+					</div>
+				</form>
+<!--			<a id="search-type-button" class="button is-ghost">Caută profesor după nume...</a>  -->
+			</div>
+		</section>
+	</div>
+{% endblock %}
+
+{% block afterbody %}
+
+	<script type="text/javascript">
+
+		SUGGESTIONS_DELAY_MILLISECONDS = 300
+
+		function delay(callback, ms) {
+		  var timer = 0;
+		  return function() {
+			var context = this, args = arguments;
+			clearTimeout(timer);
+			timer = setTimeout(function () {
+			  callback.apply(context, args);
+			}, ms || 0);
+		  };
+		}
+		
+		$("#school-search-input").keyup(delay(function(e) {
+			let value = this.value
+
+			$.ajax({
+				type: "post",
+				url: "{% url 'search:ajax_school' %}",
+				dataType: "json",
+				data: {'school':value},
+				success: function (data) {
+					var html = ''
+					data_obj = JSON.parse(data)
+
+					if (data_obj == null || data_obj.length == 0) {
+						$('.dropdown').show();
+							html += '<div class="dropdown-item container" style="height:100%; text-align: center; text-align: left;"> \
+										<p class="title is-6"> Nicio facultate cu numele "<i class="has-text-weight-bold">' + value + '</i>" nu a fost gasita <a href={% url "school:school_add" %}>(adaug-o tu)</a></p> </div>';
+
+							// if (i == 6) { break; }
+						$(".dropdown-content").html(html);
+
+					} else {
+						for (var i = 0; i < data_obj.length; i++) {
+							$('.dropdown').show();
+							link = "{% url 'school:school_view' school_id=1 %}".replace('1', data_obj[i]['id_facultate'].toString());
+
+							html += `<a href="`+link+`" style="color: #363636; text-decoration: none;"> 
+											<div class="dropdown-item"> 
+											<p class="ellipsis title is-6 mb-1">` + data_obj[i]['facultate'] + `</p> 
+											<p class="ellipsis mb-0 pb-0">` + data_obj[i]['universitate'] + `</p> 
+											<p class="ellipsis mb-0 mt-0 pt-0">` + data_obj[i]['localitate'] + `</p> </div> </a>`;
+							if (i < data_obj.length - 1) {
+								html += '<hr class="dropdown-hr">'
+							} else {
+								html += '<div class="dropdown-item"><span><a id="see-all-results-link"><strong>...vezi toate rezultatele...</strong></a></span></div>'
+							}
+
+							// if (i == 6) { break; }
+							
+						}
+						$(".dropdown-content").html(html);
+					}
+
+				}
+			});
+
+		}, SUGGESTIONS_DELAY_MILLISECONDS));
+
+		// Hide dropdown on click outside the input & dropdown div container
+		$(document).mouseup(function(e) {
+		    var container = $(".trigger-school-name-area");
+
+		    // if the target of the click isn't the container nor a descendant of the container
+		    if (!container.is(e.target) && container.has(e.target).length === 0) 
+		    {
+		        $('.dropdown').hide();
+		    }
+		});
+
+		// Switch to prof search mode
+		$('#search-type-button').click(function() {
+			$("#form-prof").toggle(); 
+			$("#form-fac").toggle();
+			console.log($(this).text());
+			if ($(this).text() == "Caută profesor după nume...") {
+				$(this).text("Caută-ți școala...");
+			} else {
+				$(this).text("Caută profesor după nume...");
+			}
+		});
+
+	// Submit search form when user clicks "see all results" link
+	$(document).on("click","#see-all-results-link", function () {
+		if ($('#form-fac').hasClass('hide')) {
+			$('#form-prof').submit()
+		} else if ($('#form-prof').hasClass('hide')) {
+			$('#form-fac').submit()
+		}
+	});
+	</script>
+
+
+	<style type="text/css">
+
+
+	</style>
+{% endblock %}

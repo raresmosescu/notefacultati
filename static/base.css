@@ -1,0 +1,565 @@
+/* A GOOD COLOR SCHEME THAT FIT THE WEBSITE - https://diariesofanessexgirl.com/golden-yellow-and-blue-color-palette/ */
+
+
+/* Bulma.css overwrite */
+
+.box {
+	box-shadow: 0 0.1em 0.5em -0.125em rgb(10 10 10 / 50%), 0 0 0 1px rgb(10 10 10 / 2%);
+	border-radius: 2px;
+}
+
+.card {
+	box-shadow: 0 0.1em 0.5em -0.125em rgb(10 10 10 / 30%), 0 0 0 1px rgb(10 10 10 / 2%);
+	border-radius: 2px;
+}
+
+@media screen and (max-width: 480px) {
+	.section {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	.title.is-1 {
+		font-size: 2.2rem;
+	}
+	.title.is-3 {
+		font-size: 1.7rem;
+	}
+
+
+}
+
+
+
+/*From search.html*/
+/* Style from search.html*/
+
+#school-search-input {
+	border-top-right-radius: 0; 
+	border-bottom-right-radius: 0; 
+	display: inline;
+}
+#school-search-button {
+	display: inline; 
+	border-top-left-radius: 0; 
+	border-bottom-left-radius: 0;
+}
+#prof-search-input {
+	border-top-right-radius: 0; 
+	border-bottom-right-radius: 0; 
+	display: inline;
+}
+#prof-search-button {
+	display: inline; 
+	border-top-left-radius: 0; 
+	border-bottom-left-radius: 0;
+}
+#college-image {
+	width: 10%;
+}
+.ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.dropdown-hr {
+	height: 1px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	width: 95%;
+	margin: auto;
+	background-color: #f2f3f4;
+}
+.dropdown {
+	float: left; 
+	text-align: left;
+}
+.dropdown-item {
+	height: 4.7rem;
+}
+.no-effects-link {
+	color: #363636; 
+	text-decoration: none;
+}
+.center-screen {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	min-height: 85vh;
+}
+#search-container, #dropdown-menu5 {
+	width: 35vw;
+	font-size: 35px;
+}
+
+@media screen and (max-width: 1280px) {
+	#search-container, #dropdown-menu5 {
+		width: 45vw;
+	}
+	#main-title {
+		font-size: 40px;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	#search-container, #dropdown-menu5 {
+		width: 60vw;
+	}
+	#main-title {
+		font-size: 45px;
+	}
+	.center-screen {
+		min-height: 80vh;
+	}
+	#school-search-input, #prof-search-input {
+		font-size: 1.2rem;
+	}
+	#school-search-button, #prof-search-button {
+		font-size: 1.2rem;
+	}
+}
+@media screen and (max-width: 764px) {
+	#search-container, #dropdown-menu5 {
+		width: 75vw;
+	}
+	#main-title {
+		font-size: 40px;
+	}
+	.center-screen {
+		min-height: 75vh;
+	}
+	#school-search-input, #prof-search-input {
+		font-size: 1.2rem;
+	}
+	#school-search-button, #prof-search-button {
+		font-size: 1.2rem;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	#search-container, #dropdown-menu5 {
+		width: 90vw;
+	}
+	#main-title {
+		font-size: 45px;
+	}
+	.center-screen {
+		min-height: 80vh;
+	}
+	#school-search-input, #prof-search-input {
+		font-size: 1.2rem;
+	}
+	#school-search-button,	 #prof-search-button {
+		font-size: 1.2rem;
+	}
+}
+
+.hide {
+	display: none;
+}
+
+
+/*From nav.html*/
+
+
+
+
+/* From base.html */
+
+.base-body {
+	background-color: #f5f5f5;
+}
+
+/* From prof_add.html*/
+
+.hide {
+	display: none;
+}
+.form-container-1 {
+	width: 35vw;
+}
+@media screen and (max-width: 1280px) {
+	.form-container-1 {
+		width: 45vw;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.form-container-1 {
+		width: 60vw;
+	}
+}
+@media screen and (max-width: 764px) {
+	.form-container-1 {
+		width: 75vw;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.form-container-1 {
+	width: 90vw;
+	}
+}
+
+
+
+
+
+/* prof_view.html REVIEWS SECTION CSS*/
+@media screen and (max-width: 360px) {
+	i.listing-star {
+		font-size: .95rem;
+	}
+}
+
+i.fa-fire.checked {
+	color: red;
+}
+
+i.fa-fire {
+	color: lightgrey;
+}
+
+i.fa-star {
+	color: lightgrey;
+}
+
+i.fa-star.checked {
+	color: orange;
+}
+
+.big-star-icon {
+	font-size: 2rem;
+}
+
+.comment-action-icon {
+	color: lightgrey;
+}
+.comment-action-text {
+	color: grey;
+}
+
+.comment-action-button:hover {
+	background-color: #f2f2f2;
+}
+
+.comment-action-button:hover .comment-action-text {
+	color: #136ff0;
+}
+
+.comment-action-button:hover .comment-action-icon {
+	color: #136ff0;
+}
+
+.message-border-box {
+	border-color: lightgrey; 
+	border-width: 1px; 
+	border-style: solid; 
+	min-height: 55%;
+}
+
+@media screen and (max-width: 764px) {
+	.comment-action-text {
+		display: none;
+	}
+	.message-border-box {
+		min-height: 70px;
+	}
+}
+
+
+
+.reviews-add-button {
+	background-color: #f0a800; 
+	font-weight: bold;
+	color: black;
+}
+
+.reviews-add-button:hover {
+	background-color: #ffb30f; 
+}
+
+.prof-grid {
+	display: grid;
+}
+
+.reviews-hr-line {
+	border:3px solid #f1f1f1
+}
+
+.heading {
+  font-size: 25px;
+  margin-right: 25px;
+}
+
+.fa {
+  font-size: 25px;
+}
+
+.checked {
+  color: orange;
+}
+
+/* Three column layout */
+.side {
+  float: left;
+  width: 15%;
+  margin-top: 10px;
+}
+
+.middle {
+  float: left;
+  width: 70%;
+  margin-top: 10px;
+}
+
+/* Place text to the right */
+.right {
+  text-align: right;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* The bar container */
+.bar-container {
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  color: white;
+}
+
+/* Individual bars */
+.bar-5 {width: 60%; height: 18px; background-color: #04AA6D;}
+.bar-4 {width: 30%; height: 18px; background-color: #2196F3;}
+.bar-3 {width: 10%; height: 18px; background-color: #00bcd4;}
+.bar-2 {width: 4%; height: 18px; background-color: #ff9800;}
+.bar-1 {width: 15%; height: 18px; background-color: #f44336;}
+
+/* Responsive layout - make the columns stack on top of each other instead of next to each other */
+@media (max-width: 400px) {
+  .side, .middle {
+    width: 100%;
+  }
+  /* Hide the right column on small screens */
+  .right {
+    display: none;
+  }
+}
+
+
+/* school_add.html style */
+
+.form-container-1 {
+	width: 35vw;
+}
+@media screen and (max-width: 1280px) {
+	.form-container-1 {
+		width: 45vw;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.form-container-1 {
+		width: 60vw;
+	}
+}
+@media screen and (max-width: 764px) {
+	.form-container-1 {
+		width: 75vw;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.form-container-1 {
+	width: 90vw;
+	}
+}
+
+
+/* school_view.html*/
+
+#scrollable-div {
+	overflow-y: scroll;
+	height: 70vh;
+}
+
+.professor-box a {
+	color: #363636; 
+	text-decoration: none;
+}  
+
+.school-professor-box {
+	margin-right: 0.75rem;
+	margin-left: 0.75rem;
+}
+
+.listing-star-container {
+	padding-top: 3px;
+}
+
+@media screen and (max-width: 480px) {
+	.listing-star-container {
+		padding-top: 0.75rem;
+	}
+	.school-professor-box {
+		margin-right: 0.25rem;
+		margin-left: 0.25rem;
+	}
+	.school-professors-container{
+		padding-right: 0.25rem;
+		padding-left: 0.25rem;
+	}
+
+	.professors-nav-bar {
+		margin-bottom: 100px;
+	}
+}
+
+.school-professors-title {
+	width:100%;
+}
+
+@media screen and (max-width: 768px) {
+	.school-professors-title {
+		width:70%;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.school-professors-title {
+		width:100%;
+	}
+	#school-prof-name-filter {
+		width:100%;
+	}
+}
+
+.info-icon {
+	color:#3273dc;
+}
+
+
+
+/* review_add.html css */
+
+
+#review-message {
+	text-align: left;
+	vertical-align: top;
+}
+
+
+
+
+.clickable {
+	cursor: pointer;
+}
+
+#would-repeat-yes {
+	background-color: #183723;
+	color: white;
+}
+
+#would-repeat-yes:hover {
+	background-color: #3a8153;
+	color: white;
+}
+
+#would-repeat-no {
+	background-color: #4c101c;
+	color: white;
+}
+
+#would-repeat-no:hover {
+	background-color: #b22743;
+	color: white;
+}
+
+.centered-container {
+	display: table; 
+	float: left;
+}
+
+.centered-element {
+	display:table-cell; 
+	vertical-align: middle
+}
+
+/* Rating widgets */
+
+.fire-rating-icon, .fire-rating-number, .star-rating-icon, .star-rating-number {
+	font-size: 2.5rem;
+	color: grey;
+}
+
+@media screen and (max-width: 480px) {
+	.fire-rating-icon, .fire-rating-number, .star-rating-icon, .star-rating-number {
+		font-size: 2.5rem;
+	}
+}
+
+@media screen and (max-width: 360px) {
+	.fire-rating-icon, .fire-rating-number, .star-rating-icon, .star-rating-number {
+		font-size: 2.3rem;
+	}
+}
+
+
+
+
+/* FROM school_profs_results.html */
+
+h1.prof-name > i.info-icon {
+	font-size: 2.5rem;
+	color: hsl(0, 0%, 21%);
+}
+
+@media screen and (max-width:  480px){
+	i.info-icon {
+		font-size: 1.3rem;
+	}
+	p.wrap-text {
+		font-size: .9rem;
+	}
+	h1.prof-name > i.info-icon {
+		font-size: 2rem;
+	} 
+}
+@media screen and (max-width: 768px) {
+	p.wrap-text {
+	     max-width: 100%;
+	     overflow: hidden;
+ 	     display: -webkit-box;
+ 	     -webkit-line-clamp: 2;
+ 	     -webkit-box-orient: vertical;
+	}
+}
+@media screen and (min-width: 768px) {
+	p.wrap-text {
+	     width: 100%;
+	     white-space: nowrap;
+	     overflow: hidden;
+	     text-overflow: ellipsis;
+
+	}
+}
+
+@media screen and (max-width: 480px) {
+  .professors-nav-bar.columns {
+  	margin-left: 0px;
+  	margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 1060px) {
+	.professors-nav-bar.columns:not(.is-desktop) {
+    display: inline-block;
+	}
+}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %} Rezultate Profesori {% endblock %}
+
+{% block body %}
+
+	<div>
+		<section class="section">
+			<h1 class="title is-2" style="text-align: center;"> Rezultate Profesori </h1>
+			<div class="container mgt-medium">
+				{% if professors|length >= 1 %}
+					{% for prof in professors %}
+						<div class="box">
+							<a href="{% url 'prof:prof_view' prof.id_profesor %}" style="color: #363636; text-decoration: none; ">
+								<div>
+									<h1 class="title is-4">{{prof.nume}}</h1>
+									<div class="content">
+										{% if prof.disciplina %}
+											<p>Disciplina <strong>{{prof.disciplina}}</strong></p>
+										{% endif %}
+										<p>In departamentul <strong>{{prof.departament}}</strong></p>
+										<p>Al facultatii <strong>{{prof.id_facultate.facultate}}</strong></p>
+										<p>Din <strong>{{prof.id_facultate.universitate}}</strong></p>
+										<p>Localitatea <strong>{{prof.id_facultate.localitate}}</strong></p>
+									</div>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+					<div class="container mt-5">
+						<div class="content">
+							<p>
+								Nu-ti gasesti profesorul? 
+								Incearca sa <a href = "{% url 'search_page' %}"><strong>fii mai specific</strong></a> 
+								sau <a href = "url 'search_page'"><strong>cauta facultatea</strong></a> la care preda.
+							</p>
+						</div>
+					</div>
+				{% else %}
+					<div class="notification is-warning is-light" style="text-align: center; font-size: 20px;">
+						<p class="content">Nu a fost gasit niciun profesor cu acest nume.</p>
+						<p class="content"><i>Verifica daca l-ai scris corect sau incearca alt nume.</i></p>
+						<a class="button is-warning" href="{% url 'search_page' %}" style="display: inline-block; width: "> Inapoi la cautare</a>
+					</div>
+					<div class="notification is-info is-light" style="text-align: center; font-size: 20px;">
+						<p class="content">Nu-ti gasesti profesorul?</p>
+						<a class="button is-dark" href="{% url 'prof:prof_add' %}" style="display: inline-block; width: "> Adauga un profesor</a>
+					</div>
+				{% endif%}
+			</div>
+		</section>
+
+	</div>
+
+{% endblock %}
+
+

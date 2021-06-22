@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Creaza cont student{% endblock %}
+
+{% block body %}
+
+	<section class="section">
+	<div class="container form-container-1 ">
+		<div >
+			<h3 class="title is-3"> Logheaza-te </h3>
+			<form method="POST" name="login"> {% csrf_token %}	
+
+				<div class="field">
+				  <label class="label">*Email</label>
+				  <div class="control">
+				    <input name="login-email" class="input is-medium" type="email" placeholder="ex. popescu@gmail.com" required>
+				  </div>
+				  <p class="help password-field-1 is-danger hide">Email incorect</p>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Parola</label>
+				  <div class="control">
+				    <input name="login-password" class="password-field-1 input is-medium" type="password" maxlength = 30 required>
+				  </div>
+				  <p class="help password-field-1 is-danger hide">Parola incorecta</p>
+				</div>
+
+				<div class="content">
+					<p>Nu ai cont? Fa-ti unul <a href="{% url 'user:user_create' %}"><strong>aici</strong></a>.</p>
+				</div>	
+
+				  <div class="control">
+				    <button type="submit" class="submit button is-link">Autentificare</button>
+				  </div>
+			</form>
+		</div>
+	</div>
+	</section>	
+
+
+{% endblock %}
+{% block afterbody %}
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Creaza cont{% endblock %}
+
+{% block body %}
+
+	<section class="section">
+	<div class="container form-container-1 ">
+		<div >
+			<h3 class="title is-3"> Creaza cont </h3>
+			<div class="content">
+				<p><strong>De stiut:</strong> Nu-ti vom afisa niciodata informatiile, nimanui. Vei ramane anonim mereu.</p>
+			</div>	
+			<form method="POST" action="{% url 'user:user_create' %}" name="user_create"> {% csrf_token %}	
+
+				<div class="field">
+				  <label class="label">*Email</label>
+				  <div class="control">
+				    <input name="email" class="input is-medium" type="email" placeholder="ex. popescu@gmail.com" required>
+				  </div>
+				  <p class="help">O vei folosi sa verifici contul si sa te loghezi</p>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Parola</label>
+				  <div class="control">
+				    <input name="password" class="password-field-1 input is-medium" type="password" maxlength = 30 required>
+				  </div>
+				  <p class="help password-field-1 is-danger hide">Minim 8 caractere</p>
+				</div>
+
+				<div class="field">
+				  <label class="label">*Verifica parola</label>
+				  <div class="control">
+				    <input class="password-field-2 input is-medium" type="password" maxlength = 30 required>
+				  </div>
+				  <p class="help password-field-2 is-danger hide">Parolele sunt diferite</p>
+				</div>
+
+				<div class="field mt-4">
+				  <div class="control">
+				    <label class="checkbox">
+				      <input type="checkbox" name="checkbox" required>
+				      I agree to the <a href="#">terms and conditions</a>
+				    </label>
+				  </div>
+				</div>
+
+				  <div class="control">
+				    <button type="submit" class="submit button is-link">Submit</button>
+				  </div>
+			</form>
+		</div>
+	</div>
+	</section>	
+
+
+{% endblock %}
+{% block afterbody %}
+
+<script type="text/javascript">
+
+	$('input.password-field-1').focusout(function () {
+		let p1 = $('input.password-field-1').val();
+
+		if (p1.length < 8) {
+			$(':button[type="submit"]').prop('disabled', true);
+			$(this).addClass('is-danger');
+			$('p.password-field-1.help').removeClass('hide');
+			$(this).removeClass('is-success');
+		} else {
+			$(':button[type="submit"]').prop('disabled', false);
+			$(this).removeClass('is-danger');
+			$(this).addClass('is-success');
+			$('p.password-field-1.help').addClass('hide');
+		}		
+	});
+
+	$('input.password-field-2').focusout(function () {
+		let p1 = $('input.password-field-1').val();
+		let p2 = $(this).val();
+		if (p2 != '' && p2 != null) {
+			if (p1 != p2) {
+				$(':button[type="submit"]').prop('disabled', true);
+				$(this).addClass('is-danger');
+				$('p.password-field-2.help').removeClass('hide');
+				$(this).removeClass('is-success');
+			} else {
+				$(':button[type="submit"]').prop('disabled', false);
+				$(this).removeClass('is-danger');
+				$(this).addClass('is-success');
+				$('p.password-field-2.help').addClass('hide');
+			}		
+		}
+	});
+</script>
+
+{% endblock %}

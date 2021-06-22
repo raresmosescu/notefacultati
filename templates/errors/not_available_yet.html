@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Rezultate Profesori {% endblock %}
+
+{% block body %}
+
+	<div>
+		<section class="section">
+			<div class="container mt-5">
+				<div class="notification is-warning is-light" style="text-align: center; font-size: 20px;">
+					<p class="">Aceasta optiune nu exista inca.</p>
+					<p class="mt-2 mb-4">Vrei sa ne zici ceva? Email contact <strong>support@noteprofesori.ro</strong> </p>
+					<a class="button is-warning" href="{% url 'search_page' %}" style="display: inline-block;"> Inapoi la cautare</a>
+					
+				</div>
+			</div>
+		</section>
+
+	</div>
+
+{% endblock %}
+
+

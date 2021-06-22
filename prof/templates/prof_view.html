@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ prof.nume }}{% endblock %}
+
+{% load jinja_custom_filters %}
+
+{% block body %}
+
+	<div>
+
+	<section class="section pt-5 pb-1">
+		<div class="container">
+			<h1 class="title is-1 has-text-centered" > <i class="fa fa-user title is-1"></i> {{ prof.nume }} </h1>
+			<div class="columns">
+				<div class="column prof-grid">
+					<div class="box">
+						<div class="container">
+							<div class="content px-3 py-3">
+								<h2 class="title is-3">Detalii</h2>
+								{% if prof.disciplina %}
+									<p><i class="info-icon fa fa-book ml-1"></i> Materia predata <strong>{{prof.disciplina}}</strong></p>
+								{% endif %}
+								<p><i class="info-icon fa fa-users"></i> In departamentul <strong>{{prof.departament}}</strong></p>
+								
+								<p>
+									<i class="info-icon fa fa-building-o ml-1 mr-1"></i> 
+									Al facultatii 
+									<a href="{% url 'school:school_view' prof.id_facultate %}">
+										<strong>{{school.facultate}}</strong>
+									</a>
+								</p>
+								<p><i class="info-icon fa fa-university"></i> Din <strong>{{school.universitate}}</strong></p>
+								<p><i class="info-icon fa fa-location-arrow ml-1 mr-1"></i> Localitatea <strong>{{school.localitate}}</strong></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="column prof-grid">
+					<div class="box">
+						<div class="reviews-section">
+							<div class="reviews-container">
+								<div class="content px-3 py-3">
+									<h2 class="title is-3">Media notelor</h2>
+										{% for star in stars %}
+											{% if star == 1 %}
+												<span class="big-star-icon fa fa-star checked"></span>
+											{% else %}
+												<span class="big-star-icon fa fa-star"></span>
+											{% endif %}
+										{% endfor %}
+
+									{% if grades_avg %}
+										<span class="fa ml-2">{{ grades_avg }} / 5</span>
+									{% else %}
+										<span class="fa ml-2">0 note</span>
+									{% endif %}
+									
+									<p>
+
+										{% if grades_count > 1 %}
+											<strong><span id="average_grades">{{ grades_avg }}</span></strong> 
+											media a {{grades_count}} note.
+										{% endif %}
+
+									</p>
+
+									{% if grades_avg %}
+										<a href="{{ request.path }}adauga-nota" class="button reviews-add-button">Da-i nota profului</a>
+									{% else %}
+										<a href="{{ request.path }}adauga-nota" class="button reviews-add-button">Fii primul care da nota</a>
+									{% endif %}
+
+
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="columns">
+				{% if agg_tag_names %}
+				<div class="column prof-grid">
+					<div class="box">
+						<div class="container">
+							<h2 class="title is-3">Taguri</h2>
+							<div class="tags mt-3">
+								{% for k, v in agg_tag_names.items %}
+									<span class="tag is-dark">{{ k }} ({{ v }})</span>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</section>
+
+	
+	<section class="section pt-1 pb-5 comment-section" >
+		{% include 'comments.html'%}
+	</section>
+
+	</div>
+
+{% endblock %}
+
+{% block afterbody %}
+
+<style type="text/css">
+
+
+
+	
+</style>
+
+{% endblock %}

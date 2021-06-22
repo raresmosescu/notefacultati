@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+	<div class="container form-container-1 ">
+		<div >
+			<h3 class="title is-3 mt-5"> Adauga o nota pentru {{ prof.nume }} </h3>
+			<div class="content">
+				<p><strong>Important:</strong> Scrie parerea ta sincera despre experienta ta cu acest profesor dar evita cuvintele vulgare sau informatii personale despre acesta.</p>
+			</div>	
+			<form method="POST" name="prof_add" class="rating-form"> {% csrf_token %}	
+
+				<div class="input-validation-container">
+					<div class="field">
+					  <label class="label mb-4">*Nota generala</label>
+					  <div class="star-rating-container">
+						  <div class="control star-rating-widget">
+							    <div class="fa fa-star star-rating-icon clickable" title="text" data-value="1"></div>
+							    <div class="fa fa-star star-rating-icon clickable" title="text" data-value="2"></div>
+							    <div class="fa fa-star star-rating-icon clickable" title="text" data-value="3"></div>
+							    <div class="fa fa-star star-rating-icon clickable" title="text" data-value="4"></div>
+							    <div class="fa fa-star star-rating-icon clickable" title="text" data-value="5"></div>
+							    <input id = "star-rating-output" type="hidden" name="star-rating">
+							    <span class="fa ml-2 star-rating-number">0.0</span>
+						  </div>
+					  </div>
+					</div>
+
+					<div class="field">
+					  <label class="label mb-4">*Dificultatea de trecere</label>
+					  
+					  <div class="fire-rating-container">
+						  <div class="control fire-rating-widget">
+						    <div class="fa fa-fire fire-rating-icon clickable" title="text" data-value="1"></div>
+						    <div class="fa fa-fire fire-rating-icon clickable" title="text" data-value="2"></div>
+						    <div class="fa fa-fire fire-rating-icon clickable" title="text" data-value="3"></div>
+						    <div class="fa fa-fire fire-rating-icon clickable" title="text" data-value="4"></div>
+						    <div class="fa fa-fire fire-rating-icon clickable" title="text" data-value="5"></div>
+						    <input id = "fire-rating-output" type="hidden" name="fire-rating">
+						    <span class="fa ml-2 fire-rating-number">0.0</span>
+						  </div>
+					  </div>
+					</div>
+
+					<div class="field">
+						<label class="label">*Ai repeta experienta?</label>
+						<div class="centered-container">
+							
+							<div class="tags switch-logic">
+							  <span id = "would-repeat-yes" class="clickable tag is-rounded is-outlined is-large">Da, as repeta</span> 
+							  <span id = "would-repeat-no" class="clickable tag is-rounded is-outlined is-large">Nu, multumesc</span>
+							  <input id='would-repeat-output' type="hidden" name="would-repeat">
+							</div>  
+						</div>
+					</div>
+				</div>
+
+				<div class="field">
+				  <div class="control pt-6">
+				  	<label class="label">Descrie experienta cu maxim 3 taguri</label>
+				  	<div class="tags">
+				  		{% for tag in tags %}
+				  			<span class="prof-tag clickable tag is-dark is-medium" data-tag-id = {{tag.id_tag}}> {{ tag.nume }} </span>
+				  		{% endfor %}
+				      <input type="hidden" class="prof-tag-output" name="tags" required></input>
+				      <input type="hidden" class="prof-tag-output" name="tags" required></input>
+				      <input type="hidden" class="prof-tag-output" name="tags" required></input>
+				    </div>
+				  </div>
+				</div>
+
+				<div class="field">
+				  <div class="control pt-5">
+				  	<label class="label">Ai ceva de zis? Aici e sansa ta</label>
+				  	<textarea class="textarea has-fixed-size is-medium" placeholder="Fii sincer. Nota e anonima." id = "review-message" type="text" maxlength="200" rows="4"></textarea>
+				  	<input id = "review-message-output" type="hidden" name="message" value=''>
+				  </div>
+				</div>
+
+				<div class="field">
+				  <div class="control pt-5">
+				  	<label class="label">Nota obtinuta la acest profesor</label>
+				    <div class="select is-medium">
+				      <select name="grade" id = "select-department" value=''>
+				        	<option selected value = ''>Niciuna</option>
+				        	<option>10</option>
+				        	<option>9</option>
+				        	<option>8</option>
+				        	<option>7</option>
+				        	<option>6</option>
+				        	<option>5</option>
+				        	<option>4</option>
+				        	<option>3</option>
+				        	<option>2</option>
+				        	<option>1</option>
+				      </select>
+				    </div>
+				  </div>
+				</div>
+
+				<hr class="dropdown-hr">
+
+
+			</form>
+			<div class="container mt-2 pb-5">
+			    <button class="button is-link is-medium review-submit">Salveaza</button>
+		  	</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block afterbody %}
+
+<script type="text/javascript">
+
+	// Update rating number when star is clicked
+	$('.star-rating-icon').click(function () {
+		let value = $(this).attr('data-value');
+		$(this).css('color', 'orange');
+
+		$(this).siblings('div.star-rating-icon').each(function(idx, obj) {
+			if ($(this).attr('data-value') <= value) {
+				$(this).css('color', 'orange');
+			} else {
+				$(this).css('color', 'grey');
+			}
+		});
+
+		$('.star-rating-number').text(`${value}.0`);
+		$('#star-rating-output').val(value);
+	});
+
+	// Update rating number when fire is clicked
+	$('.fire-rating-icon').click(function () {
+		let value = $(this).attr('data-value');
+		$(this).css('color', 'red');
+
+		$(this).siblings('div.fire-rating-icon').each(function(idx, obj) {
+			if ($(this).attr('data-value') <= value) {
+				$(this).css('color', 'red');
+			} else {
+				$(this).css('color', 'grey');
+			}
+		});
+		
+		$('.fire-rating-number').text(`${value}.0`);
+		$('#fire-rating-output').val(value);
+	});
+
+	// Update would repeat output when option is clicked 
+	// YES/NO LOGIC BUTTONS
+	$('#would-repeat-yes').click(function () {
+		$(this).css('background-color', 'hsl(141, 53%, 53%)').addClass('is-clicked');
+		$('#would-repeat-no').css('background-color', '#4c101c').removeClass('is-clicked');
+		$('#would-repeat-output').val(1);
+		
+	});
+	$('#would-repeat-no').click(function () {
+		$(this).css('background-color', 'hsl(348, 100%, 61%) ').addClass('is-clicked');
+		$('#would-repeat-yes').css('background-color', '#183723').removeClass('is-clicked');
+		$('#would-repeat-output').val(0)
+	});
+
+	// Update tags on click
+	$('.prof-tag').click(function () {
+
+		let has_null = true;
+		let tag_text = $(this).text();
+		let tag_id = $(this).attr('data-tag-id');
+
+		// If the tag is already selected
+		if ($(this).hasClass('is-success')) {
+
+			$(this).removeClass('is-success');
+
+			$('.prof-tag-output').each(function (idx, obj) {
+				out_val = $(this).val();
+				if(out_val == tag_id) {
+					// console.log(idx, 'null');
+					$(this).val(null);
+					return false;
+				}
+			});
+		} else {
+		// If the tag isn't selected yet, check to see if there's any empty output fields (max tag limit = # of output fields)
+			
+			$('.prof-tag-output').each(function (idx, obj) {
+				out_val = $(this).val();
+				if(out_val == null || out_val == '') {
+					has_null = true;
+					// console.log(idx, tag_text);
+					$(this).val(tag_id);
+
+					return false;
+				} else {
+					has_null = false;
+				}
+			});	
+			// If there the tag didn't go over the max tag limit then add the selected class to it, otherwise display a message about the limit
+			if (has_null == true) {
+				$(this).addClass('is-success');
+			} else {
+				alert('Poti selecta maxim 3 taguri');
+			}		
+		}
+	});
+
+	// Simple submit function
+	$('button.review-submit').click(function () {
+
+
+		if (validate_1() && validate_2() && validate_3()) {
+			$('form.rating-form').submit();
+		} else {
+			alert("Campurile cu * sunt obligatorii");
+		}	
+	});
+
+	function validate_1() {
+		// star rating
+		let value = $('#star-rating-output').val();
+		if (value != null && value != '') {
+			// console.log(value, 'star checked');
+			return true;
+		}
+		return false;
+	}
+
+	function validate_2() {
+		// fire rating
+		let value = $('#fire-rating-output').val();
+		if (value != null && value != '') {
+			// console.log(value, 'fire checked');
+			return true;
+		}
+	
+		return false;
+	}
+
+	function validate_3() {
+		// would repeat output
+		let value = $('#would-repeat-output').val();
+		if (value != null && value != '') {
+			// console.log(value, 'would repeat');
+			return true;
+		}
+	
+		return false;
+	}
+
+	// textarea logic
+	$('#review-message').change(function () {
+		$('#review-message-output').val($(this).val());
+	});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %} Rezultate Profesori {% endblock %}
+
+{% block body %}
+
+	<div>
+		<section class="section">
+			<div class="columns professors-nav-bar mb-4 is-centered">
+				<div class="column is-narrow-tablet">
+					<p class=" title is-3 ">Profesori la <a href="{% url 'school:school_view' fac.id_facultate %}">{{fac.facultate}}</a></p>
+				</div>
+				
+				<div class="column is-narrow">
+					<div class="school-professors-title control">
+						<form id="school-prof-search-form" action="{% url 'search:school_profs' fac.id_facultate %}">
+							<div class="field has-addons">
+							  <div class="control">
+							    <input id="school-prof-name-filter" name="query" class="input" type="text" placeholder="Cauta profesor" value="{{ query }}">
+							  </div>
+							  <div class="control">
+							    <a id = "school-prof-name-button" class="button" onclick="$('#school-prof-search-form').submit();" style="background-color: hsl(141, 53%, 53%); color: white;">
+							      <i class="fa fa-search mr-1" style="font-size: inherit;"></i>Search
+							    </a>
+							  </div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="container is-centered mb-3 is-hidden-tablet pl-3 pr-3">
+				Rezultate pentru <strong>"{{ query }}"</strong>
+			</div>
+			<div class="container mgt-medium">
+				{% if profs|length >= 1 %}
+					{% for prof in profs %}
+						
+							<a href="{% url 'prof:prof_view' prof.id_profesor %}" style="color: #363636; text-decoration: none; ">
+								<div class="box mb-3">
+								<div>
+									<h1 class="prof-name title is-4">
+										<i class="info-icon fa fa-user mr-3"></i>
+										{{prof.nume}}
+									</h1>
+									<div class="content">
+										{% if prof.disciplina %}
+											<p class="wrap-text">
+												<i class="info-icon fa fa-book ml-1"></i>
+												Materia predata <strong>{{prof.disciplina}}</strong>
+											</p>
+										{% endif %}
+										{% if prof.departament %}
+											<p class="wrap-text">
+												<i class="info-icon fa fa-users"></i>
+												In departamentul <strong>{{prof.departament}}</strong>
+											</p>
+										{% endif %}
+									</div>
+								</div>
+							
+						</div>
+						</a>
+					{% endfor %}
+					<div class="container mt-5">
+						<div class="content pl-3 pr-3">
+							<p>
+								Nu-ti gasesti profesorul? 
+								Asigura-te ca ai <strong>scris corect</strong> sau cauta doar <strong>dupa numele de familie</strong>.
+							</p>
+							<p>
+								Daca tot nu gasesti <a href = "{% url 'prof:prof_add' %}"><strong>adauga un prof nou</strong></a>.
+							</p>
+						</div>
+					</div>
+				{% else %}
+					<div class="notification is-warning is-light" style="text-align: center; font-size: 20px;">
+						<p class="content">Nu a fost gasit niciun profesor cu acest nume.</p>
+						<p class="content"><i>Verifica daca l-ai scris corect sau incearca doar cu numele de familie.</i></p>
+					</div>
+					<div class="notification is-info is-light" style="text-align: center; font-size: 20px;">
+						<p class="content">Nu-ti gasesti profesorul?</p>
+						<a class="button is-dark" href="{% url 'prof:prof_add' %}" style="display: inline-block; width: "> Adauga unul nou</a>
+					</div>
+				{% endif%}
+			</div>
+		</section>
+
+	</div>
+
+{% endblock %}
+
+

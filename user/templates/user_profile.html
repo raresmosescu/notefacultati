@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Contul Meu{% endblock %}
+
+{% block body %}
+
+	<section class="section">
+	<div class="container form-container-1 ">
+		<div >
+			<h3 class="title is-1"> <i class="fa fa-user title is-1 mr-4"></i>Contul Meu </h3>
+<!-- 			<div class="content">
+				<p><strong>De stiut:</strong> Nu-ti vom afisa niciodata informatiile, nimanui. Vei ramane anonim mereu.</p>
+			</div> -->	
+
+			<form class="pt-4" method="POST" name="user_profile"> {% csrf_token %}	
+				<hr class="mt-1 mb-5  is-black" style="background-color: lightgrey; height: 1px;">
+				<h2 class="title is-4 mt-6">Schimbare email</h2>
+				<div class="field">
+				  <div class="control">
+				    <input name="email" class="input is-medium" type="email" value="{{ user.email }}" required>
+				  </div>
+				</div>
+				<div class="user-change-password-field">
+				<hr class="mt-6 mb-5  is-black" style="background-color: lightgrey; height: 1px;">
+				<h2 class="title is-4 mt-6">Schimbare parola</h2>
+				<div class="field">
+					<label class="label">Noua parola</label>
+				  <div class="control">
+				    <input name="password" class="password-field-1 input is-medium" type="password" maxlength = 30 required>
+				  </div>
+				  <p class="help password-field-1 is-danger hide">Minim 8 caractere</p>
+				</div>
+
+				<div class="field">
+				  <label class="label">Verifica parola</label>
+				  <div class="control">
+				    <input class="password-field-2 input is-medium" type="password" maxlength = 30 required>
+				  </div>
+				  <p class="help password-field-2 is-danger hide">Parolele sunt diferite</p>
+				</div>
+				</div>
+				<a class="toggle-change-password-show button is-primary mt-4">Schimba-ti parola</a>
+				<hr class="mt-6 mb-6  is-black" style="background-color: lightgrey; height: 1px;">
+				  <div class="control">
+				    <button type="submit" class="submit button is-link">Salveaza schimbarile</button>
+				  </div>
+				
+			</form>
+		</div>
+	</div>
+	</section>	
+
+
+{% endblock %}
+{% block afterbody %}
+
+<script type="text/javascript">
+
+	$('input.password-field-1').focusout(function () {
+		let p1 = $('input.password-field-1').val();
+
+		if (p1.length < 8) {
+			$(':button[type="submit"]').prop('disabled', true);
+			$(this).addClass('is-danger');
+			$('p.password-field-1.help').removeClass('hide');
+			$(this).removeClass('is-success');
+		} else {
+			$(':button[type="submit"]').prop('disabled', false);
+			$(this).removeClass('is-danger');
+			$(this).addClass('is-success');
+			$('p.password-field-1.help').addClass('hide');
+		}		
+	});
+
+	$('input.password-field-2').focusout(function () {
+		let p1 = $('input.password-field-1').val();
+		let p2 = $(this).val();
+		if (p2 != '' && p2 != null) {
+			if (p1 != p2) {
+				$(':button[type="submit"]').prop('disabled', true);
+				$(this).addClass('is-danger');
+				$('p.password-field-2.help').removeClass('hide');
+				$(this).removeClass('is-success');
+			} else {
+				$(':button[type="submit"]').prop('disabled', false);
+				$(this).removeClass('is-danger');
+				$(this).addClass('is-success');
+				$('p.password-field-2.help').addClass('hide');
+			}		
+		}
+	});
+	
+
+	$(document).ready(function(){
+		$('input.password-field-1').prop("readonly", true);
+		$('input.password-field-1').prop("disabled", "disabled");
+		$('input.password-field-1').css('background-color', '#E8E8E8');
+		$('input.password-field-2').prop("readonly", true);
+		$('input.password-field-2').prop("disabled", "disabled");
+		$('input.password-field-2').css('background-color', '#E8E8E8');
+		$('input.password-field-1').val('');
+		$('input.password-field-1').removeClass('is-success');
+	})
+	
+
+	$('.toggle-change-password-show').click(function() {
+		if ($('input.password-field-1').prop("readonly")) {
+			$('input.password-field-1').prop("readonly", false);
+			$('input.password-field-1').prop("disabled", false);
+			$('input.password-field-1').css('background-color', 'white');
+			$('input.password-field-2').prop("readonly", false);
+			$('input.password-field-2').prop("disabled", false);
+			$('input.password-field-2').css('background-color', 'white');
+			
+			// if there is an error in password, disable submit button
+			if (!$('p.password-field-1.help').hasClass('hide')) {
+				$(':button[type="submit"]').prop('disabled', true);
+			}
+		} else {
+			$('input.password-field-1').prop("readonly", true);
+			$('input.password-field-1').prop("disabled", true);
+			$('input.password-field-1').css('background-color', '#E8E8E8');
+			$('input.password-field-2').prop("readonly", true);
+			$('input.password-field-2').prop("disabled", true);
+			$('input.password-field-2').css('background-color', '#E8E8E8');
+			$(':button[type="submit"]').prop('disabled', false);			
+		}
+
+
+	});
+</script>
+
+{% endblock %}
