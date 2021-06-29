@@ -30,6 +30,33 @@
 }
 
 
+/* 
+General classes 
+---------------
+Preceeded by 'r-'
+*/
+
+.r-bold {
+	font-weight: bold;
+}
+
+.r-wrap-text {
+	 padding: .8em;
+	 max-width: 90vw;
+}
+
+.r-text-center {
+	text-align: center;
+}
+
+.r-center-content {
+	margin: 0 auto;
+}
+
+.r-underline {
+	text-decoration: underline;
+}
+
 
 /*From search.html*/
 /* Style from search.html*/

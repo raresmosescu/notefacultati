@@ -12,6 +12,8 @@ from django.urls import reverse
 from collections import defaultdict
 from django.contrib import messages
 import requests
+from django.db import connection
+
 
 # Create your views here.
 def prof_view(request, prof_id=0):
@@ -22,7 +24,7 @@ def prof_view(request, prof_id=0):
 		tags_data = Taguri.objects.all()
 
 		aggregated_tag_names, aggregated_tag_ids = aggregate_tags(reviews, tags_data)
-		print({t.id_tag:t.nume for t in tags_data})
+		# print({t.id_tag:t.nume for t in tags_data})
 		context = {'prof': prof_data, 
 		'agg_tag_names': {k:v for k,v in sorted(dict(aggregated_tag_names).items(), key=lambda x: x[1], reverse=True)},
 		'all_tags': {t.id_tag:t.nume for t in tags_data},
@@ -32,9 +34,12 @@ def prof_view(request, prof_id=0):
 		'grades_count': prof_data['numarul_notelor'], 
 		'stars': get_stars(rounded_average=prof_data['media_rotunjita'])}
 
+		update_school_ranking(prof_data['id_facultate'])
+
 		return render(request, "prof_view.html", context)
 	else:
 		return HttpResponse('<h2>Pagina pe care o cauti nu exista. Incearca alta.</h2>')
+
 
 
 def prof_add(request):
@@ -71,14 +76,15 @@ def prof_add(request):
 	else:
 		return render(request, "prof_add.html", context={'captcha_key': settings.CAPTCHA_SITE_KEY})
 
+
+
 def review_add(request, prof_id=0):
 	if prof_id != 0:
 
 		if not request.user.is_authenticated:
 			return redirect('%s?next=%s' % (reverse(settings.LOGIN_URL), request.path))
-		elif Pareri.objects.filter(id_user = request.user.id, profesor = prof_id):
-			print(True)
-			return render(request, "review_failed.html", {'id_profesor': prof_id})
+		# elif Pareri.objects.filter(id_user = request.user.id, profesor = prof_id):
+		# 	return render(request, "review_failed.html", {'id_profesor': prof_id})
 
 		if request.POST:
 			
@@ -86,14 +92,13 @@ def review_add(request, prof_id=0):
 			if 'rated_professors' not in request.session:
 				print('CLEARED')
 				request.session['rated_professors'] = []
-			if prof_id in request.session.get('rated_professors'):
-				print('FAILED')
-				return render(request, "review_failed.html", {'id_profesor': prof_id})
-			print('ADDED', request.session.get('rated_professors')) 
+			# if prof_id in request.session.get('rated_professors'):
+			# 	print('FAILED')
+			# 	return render(request, "review_failed.html", {'id_profesor': prof_id})
 
 			save_review_in_db(request, prof_id)
 
-			request.session['rated_professors'] += [prof_id]
+			# request.session['rated_professors'] += [prof_id]
 
 			return redirect(to='prof:prof_view', prof_id = prof_id)
 		
@@ -102,6 +107,8 @@ def review_add(request, prof_id=0):
 		return render(request, "review_add.html", {'prof': prof_data[0]['fields'], 'tags': tags}) 
 	else:
 		return HttpResponse('<h2>Pagina pe care o cauti nu exista. Incearca alta.</h2>')
+
+
 
 def prof_rating_data(prof_id):
 	reviews = Pareri.objects.filter(profesor = prof_id)
@@ -112,11 +119,15 @@ def prof_rating_data(prof_id):
 		grades_avg = float("{:.1f}".format( sum(grades)/grades_count )) # get the 1 point floating number of the average grades
 	return {'grades_count': grades_count, 'grades_avg': grades_avg}
 
+
+
 def get_stars(rounded_average:int):
 	if rounded_average:
 		return [1] * rounded_average + [0] * (5-rounded_average)
 	else:
 		return [0,0,0,0,0]
+
+
 
 def save_review_in_db(request, prof_id):
 	
@@ -138,6 +149,7 @@ def save_review_in_db(request, prof_id):
 		tags = None
 
 	prof = Profesori.objects.get(id_profesor=prof_id)
+
 
 	parere = Pareri(
 		id_user = AuthUser.objects.get(id=request.user.id),
@@ -163,6 +175,25 @@ def save_review_in_db(request, prof_id):
 	prof.media_rotunjita = round(rdata['grades_avg'])
 
 	prof.save()
+	update_school_ranking(id_fac = prof.id_facultate.id_facultate)
+
+
+
+def update_school_ranking(id_fac:int):
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT p.nota_generala FROM pareri AS p INNER JOIN profesori AS prof ON p.profesor = prof.id_profesor INNER JOIN facultati AS f ON f.id_facultate = prof.id_facultate WHERE f.id_facultate = %d;' % id_fac)
+        data = cursor.fetchall()
+        note = [f[0] for f in data]
+        print(note)
+
+    # ranking score algorithm (bayesian average)
+
+    avg = float(f'{sum(note)/len(note):.1f}')
+
+    # updating the database    
+    f.medie_note = avg
+    f.numar_pareri = len(note)
+    f.save()
 
 
 
@@ -209,3 +240,7 @@ def captcha(request, secret):
 		messages.warning(request, message="Trebuie sa completezi challenge-ul captcha.")
 		return False
 	return True
+
+
+
+        

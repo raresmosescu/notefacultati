@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Cauta{% endblock %}
+
+
+{% block body %}
+
+	<div class="section">
+		<div class="container">
+			<div class="title is-3 r-text-center">Clasament facultati:</div>
+			<table class="table r-center-content">
+			  <thead>
+			    <tr>
+			      <th><abbr title="Pozitia in clasament">Nr.</abbr></th>
+			      <th>Facultate</th>
+			      <th><abbr title="Calculat in functie de medie si numarul de note">Scor</abbr></th>
+			      <th><abbr title="Numarul total de note">Nr. note</abbr></th>
+			      <th><abbr title="Media tuturor notelor primite">Medie</abbr></th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	{% for school in ranked_schools %}
+				    <tr>
+				      <th>{{ forloop.counter }}</th>
+				      <td><a href="{% url 'school:school_view' school.id_facultate %}" title="{{school.facultate}}">{{school.facultate}}</a></td>
+				      <td>{{ school.scor}}</td>
+				      <td>{{ school.numar_pareri}}</td>
+				      <td>{{ school.medie_note}}</td>
+				    </tr>
+			    {% endfor %}
+			  </tbody>
+			</table>
+			
+		</div>
+	</div>
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block afterbody %}
+	
+{% endblock %}

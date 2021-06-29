@@ -2,13 +2,19 @@
 
 {% block title %}Cauta{% endblock %}
 
+{% block statusbar %} 
+	<div class="r-text-center has-background-black has-text-white">
+		<p class="r-wrap-text">
+			NOU &nbsp|&nbsp Vezi <a href="#" class="r-bold r-underline">topul facultatilor</a> din Romania
+		</p>
+	</div>
+{% endblock %}
+
 {% block body %}
 
 	<div class="center-screen">
 		<section class="section" >
 			<div id = "search-container" class="container">
-
-				
 
 				<form id="form-fac" action="{% url 'search:search' %}" class="container mb-6" method="get" name="school_add">
 					<h3 class="title is-3"> Caută-ți facultatea </h3>

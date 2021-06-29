@@ -33,8 +33,10 @@ class Pareri(models.Model):
     tag3 = models.IntegerField(blank=True, null=True)
     mesaj = models.CharField(max_length=254, blank=True, null=True)
     nota_primita_student = models.IntegerField(blank=True, null=True)
-    timestamp = models.DateTimeField(blank=True, null=True)
+    timestamp = models.DateTimeField()
     ip = models.CharField(max_length=16, blank=True, null=True)
+    likeuri = models.IntegerField(blank=True, null=True)
+    raportari = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

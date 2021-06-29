@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = config.ALLOWED_HOSTS
 
@@ -144,12 +144,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# # UNCOMMENT TO USE LOCAL STATIC FOLDER
-# STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"),
-# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -184,17 +179,26 @@ CAPTCHA_SECRET = config.CAPTCHA_SECRET
 
 ########## STORAGES ############
 
-USE_S3 = config.USE_S3
-#AWS_ACCESS_KEY_ID = your_access_key_id
-#AWS_SECRET_ACCESS_KEY = your_secret_access_key
-AWS_STORAGE_BUCKET_NAME = config.AWS_STORAGE_BUCKET_NAME
-AWS_S3_CUSTOM_DOMAIN = config.AWS_S3_CUSTOM_DOMAIN
-AWS_DEFAULT_ACL = config.AWS_DEFAULT_ACL
-AWS_S3_OBJECT_PARAMETERS = config.AWS_S3_OBJECT_PARAMETERS
-AWS_LOCATION = config.AWS_LOCATION
 
-STATIC_URL = config.STATIC_URL
-STATICFILES_STORAGE = config.STATICFILES_STORAGE
-PUBLIC_MEDIA_LOCATION = config.PUBLIC_MEDIA_LOCATION
-MEDIA_URL = config.MEDIA_URL
-DEFAULT_FILE_STORAGE = config.DEFAULT_FILE_STORAGE
+if config.USE_S3 == 'True':
+    USE_S3 = config.USE_S3
+    #AWS_ACCESS_KEY_ID = your_access_key_id
+    #AWS_SECRET_ACCESS_KEY = your_secret_access_key
+    AWS_STORAGE_BUCKET_NAME = config.AWS_STORAGE_BUCKET_NAME
+    AWS_S3_CUSTOM_DOMAIN = config.AWS_S3_CUSTOM_DOMAIN
+    AWS_DEFAULT_ACL = config.AWS_DEFAULT_ACL
+    AWS_S3_OBJECT_PARAMETERS = config.AWS_S3_OBJECT_PARAMETERS
+    AWS_LOCATION = config.AWS_LOCATION
+
+    STATIC_URL = config.STATIC_URL
+    STATICFILES_STORAGE = config.STATICFILES_STORAGE
+    PUBLIC_MEDIA_LOCATION = config.PUBLIC_MEDIA_LOCATION
+    MEDIA_URL = config.MEDIA_URL
+    DEFAULT_FILE_STORAGE = config.DEFAULT_FILE_STORAGE
+else:
+    # LOCAL STATIC FOLDER
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
+
