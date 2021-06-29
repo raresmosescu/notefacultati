@@ -83,8 +83,8 @@ def review_add(request, prof_id=0):
 
 		if not request.user.is_authenticated:
 			return redirect('%s?next=%s' % (reverse(settings.LOGIN_URL), request.path))
-		# elif Pareri.objects.filter(id_user = request.user.id, profesor = prof_id):
-		# 	return render(request, "review_failed.html", {'id_profesor': prof_id})
+		elif Pareri.objects.filter(id_user = request.user.id, profesor = prof_id):
+			return render(request, "review_failed.html", {'id_profesor': prof_id})
 
 		if request.POST:
 			
@@ -92,13 +92,13 @@ def review_add(request, prof_id=0):
 			if 'rated_professors' not in request.session:
 				print('CLEARED')
 				request.session['rated_professors'] = []
-			# if prof_id in request.session.get('rated_professors'):
-			# 	print('FAILED')
-			# 	return render(request, "review_failed.html", {'id_profesor': prof_id})
+			if prof_id in request.session.get('rated_professors'):
+				print('FAILED')
+				return render(request, "review_failed.html", {'id_profesor': prof_id})
 
 			save_review_in_db(request, prof_id)
 
-			# request.session['rated_professors'] += [prof_id]
+			request.session['rated_professors'] += [prof_id]
 
 			return redirect(to='prof:prof_view', prof_id = prof_id)
 		
