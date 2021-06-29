@@ -191,6 +191,7 @@ def update_school_ranking(id_fac:int):
     avg = float(f'{sum(note)/len(note):.1f}')
 
     # updating the database    
+    f = Facultati.objects.get(id_facultate=id_fac)
     f.medie_note = avg
     f.numar_pareri = len(note)
     f.save()
