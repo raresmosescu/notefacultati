@@ -34,7 +34,7 @@ def prof_view(request, prof_id=0):
 		'grades_count': prof_data['numarul_notelor'], 
 		'stars': get_stars(rounded_average=prof_data['media_rotunjita'])}
 
-		update_school_ranking(prof_data['id_facultate'])
+		# update_school_ranking(prof_data['id_facultate'])
 
 		return render(request, "prof_view.html", context)
 	else:
