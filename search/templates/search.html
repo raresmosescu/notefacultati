@@ -1,14 +1,8 @@
 {% extends 'base.html' %}
 
-{% block title %}Cauta{% endblock %}
+{% load static %}
 
-{% block statusbar %} 
-	<div class="r-text-center has-background-black has-text-white">
-		<p class="r-wrap-text r-center-content">
-			NOU &nbsp|&nbsp Vezi <a href="{% url 'school:school_ranking' %}" class="r-bold r-underline">topul facultatilor</a> din Romania
-		</p>
-	</div>
-{% endblock %}
+{% block title %}Cauta{% endblock %}
 
 {% block body %}
 

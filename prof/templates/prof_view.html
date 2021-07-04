@@ -1,8 +1,21 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}{{ prof.nume }}{% endblock %}
 
 {% load jinja_custom_filters %}
+
+{% block statusbar %} 
+	<div class="r-text-center has-background-black has-text-white">
+
+		<p class="r-wrap-text r-center-content">
+			<img src="{% static 'img/QRl3L.png' %}" style="vertical-align:middle; width: 24px;" alt="Lock Image">
+			&nbspNotele sunt 100% anonime.
+			<img src="{% static 'img/QRl3L.png' %}" style="vertical-align:middle; width: 24px;" alt="Lock Image">
+		</p>
+	</div>
+{% endblock %}
 
 {% block body %}
 
